@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "plant-disease-detection",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

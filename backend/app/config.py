@@ -13,10 +13,10 @@ class Settings(BaseSettings):
     debug: bool = Field(default=True, alias="DEBUG")
     
     # Model Configuration
-    model_path: str = Field(default="models/best_model.h5", alias="MODEL_PATH")
+    model_path: str = Field(default="app/models/plant_disease_extended.pth", alias="MODEL_PATH")
     model_json_path: str = Field(default="models/model.json", alias="MODEL_JSON_PATH")
-    model_type: str = Field(default="tensorflow", alias="MODEL_TYPE")
-    model_labels_path: str = Field(default="labels.json", alias="MODEL_LABELS_PATH")
+    model_type: str = Field(default="pytorch", alias="MODEL_TYPE")
+    model_labels_path: str = Field(default="app/models/class_names.json", alias="MODEL_LABELS_PATH")
     
     # Security Configuration
     secret_key: str = Field(default="your-super-secret-key-change-in-production", alias="SECRET_KEY")
@@ -51,7 +51,7 @@ class Settings(BaseSettings):
     
     # ML Model Performance
     model_warmup_samples: int = Field(default=5, alias="MODEL_WARMUP_SAMPLES")
-    prediction_timeout: int = Field(default=30, alias="PREDICTION_TIMEOUT")  # seconds
+    prediction_timeout: int = Field(default=120, alias="PREDICTION_TIMEOUT")  # seconds
     enable_model_validation: bool = Field(default=True, alias="ENABLE_MODEL_VALIDATION")
     
 

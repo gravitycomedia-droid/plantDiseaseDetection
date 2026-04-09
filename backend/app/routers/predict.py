@@ -2,11 +2,11 @@ from fastapi import APIRouter, HTTPException, UploadFile, File, Depends, Request
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-import aiofiles
 
-from ..models import PredictionResponse, ErrorResponse
-from ..model_service import model_service
+import datetime
+from ..models import PredictionResponse, ErrorResponse, PredictionResult, TreatmentInfo
 from ..config import settings
+from ..model_service import model_service
 
 
 # Rate limiter setup
@@ -22,7 +22,7 @@ def validate_image_file(file: UploadFile) -> None:
             status_code=413,
             detail=f"File size too large. Maximum size: {settings.max_image_size_bytes / (1024*1024):.1f}MB"
         )
-    
+
     # Check content type
     allowed_types = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
     if file.content_type not in allowed_types:
@@ -39,32 +39,35 @@ async def predict_disease(
     """Predict plant disease from uploaded image."""
     try:
         print(f"[DEBUG] Received image file: {image.filename}, content_type: {image.content_type}, size: {image.size if hasattr(image, 'size') else 'unknown'}")
-        
-        # Validate model is loaded
-        if not model_service.is_healthy():
-            raise HTTPException(status_code=503, detail="Model service unavailable")
-        
+
         # Validate image file
         validate_image_file(image)
-        
+
         # Read image bytes
         image_bytes = await image.read()
-        
+
         # Validate image size after reading
         if len(image_bytes) > settings.max_image_size_bytes:
             raise HTTPException(
                 status_code=413,
                 detail=f"File size too large. Maximum size: {settings.max_image_size_bytes / (1024*1024):.1f}MB"
             )
-        
+
         if len(image_bytes) == 0:
             raise HTTPException(status_code=400, detail="Empty file")
-        
-        # Make prediction
+
+        # Check if model is loaded
+        if not model_service.model_loaded:
+            raise HTTPException(
+                status_code=503,
+                detail="Model not loaded. Please wait for server initialization."
+            )
+
+        # Run real prediction
         result = model_service.predict(image_bytes)
-        
+
         return PredictionResponse(**result)
-        
+
     except HTTPException:
         raise
     except Exception as e:

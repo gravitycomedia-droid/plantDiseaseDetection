@@ -1,0 +1,24 @@
+# Large Datasets and ML Files
+plant-disease-extended/
+datasets/
+models/*.pth
+models/*.h5
+*.zip
+*.tar.gz
+
+# Python Virtual Environments
+venv/
+.venv/
+env/
+
+# Frontend Node Modules
+frontend/node_modules/
+
+# Local logs and training records
+plant-disease-extended/logs/
+/logs/
+
+# Misc
+.DS_Store
+.git/
+.ipynb_checkpoints/

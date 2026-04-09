@@ -1,4 +1,4 @@
-﻿# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -202,6 +202,9 @@ models/*
 plant_disease_model.keras
 best_model.h5
 
+# Allow class_names.json even inside models/ directories
+!**/class_names.json
+
 # Exported model directories
 ML_Model/
 ML_Model/**
@@ -235,4 +238,16 @@ security_audit.log
 # Misc project files
 *.local
 
+# Plant disease extended - large dataset files
+plant-disease-extended/datasets/
+plant-disease-extended/__pycache__/
+
+# Backend model directory - model files are too large for git
+# The .pth and binary model files are already excluded via *.pth above
+# class_names.json is small and should be committed
+backend/app/models/*.pth
+backend/app/models/*.h5
+backend/app/models/*.onnx
+
 # Keep README, docs, source files tracked, but ignore generated artifacts.
+.vercel

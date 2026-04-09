@@ -33,11 +33,7 @@ async def health_check():
 async def get_model_info():
     """Get comprehensive information about the loaded model and configuration."""
     try:
-        if not model_service.is_healthy():
-            raise HTTPException(status_code=503, detail="Model service unavailable")
-        
         return model_service.get_model_info()
-        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get model info: {str(e)}")
 
@@ -46,9 +42,6 @@ async def get_model_info():
 async def get_model_classes():
     """Get all supported disease classes with detailed information."""
     try:
-        if not model_service.is_healthy():
-            raise HTTPException(status_code=503, detail="Model service unavailable")
-        
         from ..config_manager import config_manager
         
         classes_info = []
