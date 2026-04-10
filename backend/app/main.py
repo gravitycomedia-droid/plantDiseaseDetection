@@ -26,6 +26,8 @@ from .performance import (
     AsyncTaskManager,
     optimize_memory_usage,
 )
+from .utils.hf_utils import download_model_from_hf
+
 
 
 # Setup enhanced logging
@@ -87,12 +89,17 @@ async def lifespan(app: FastAPI):
         await response_cache.initialize()
         logger.info("✅ Security components initialized")
         
+        # Ensure model is downloaded from Hugging Face if needed
+        logger.info("📦 Checking for model files from Hugging Face...")
+        await asyncio.to_thread(download_model_from_hf)
+        
         # Load model asynchronously with timeout
         await asyncio.wait_for(
             asyncio.create_task(asyncio.to_thread(model_service.load_model)),
             timeout=settings.prediction_timeout
         )
         logger.info("✅ Model loaded successfully")
+
         
         # Optimize memory usage
         await optimize_memory_usage()

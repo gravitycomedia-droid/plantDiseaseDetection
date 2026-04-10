@@ -19,3 +19,4 @@ psutil==5.9.6
 
 # Performance optimizations for deployment
 gunicorn==21.2.0
+huggingface_hub==0.19.4

@@ -239,15 +239,7 @@ security_audit.log
 *.local
 
 # Plant disease extended - large dataset files
-plant-disease-extended/datasets/
-plant-disease-extended/__pycache__/
-
-# Backend model directory - model files are too large for git
-# The .pth and binary model files are already excluded via *.pth above
-# class_names.json is small and should be committed
-backend/app/models/*.pth
-backend/app/models/*.h5
-backend/app/models/*.onnx
-
-# Keep README, docs, source files tracked, but ignore generated artifacts.
+plant-disease-extended/
+*.zip
 .vercel
+

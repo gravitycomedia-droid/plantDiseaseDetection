@@ -54,6 +54,14 @@ class Settings(BaseSettings):
     prediction_timeout: int = Field(default=120, alias="PREDICTION_TIMEOUT")  # seconds
     enable_model_validation: bool = Field(default=True, alias="ENABLE_MODEL_VALIDATION")
     
+    # Hugging Face Configuration
+    hf_repo_id: str = Field(default="VishnuK6/PDD", alias="HF_REPO_ID")
+    hf_model_file: str = Field(default="plant_disease_extended.pth", alias="HF_MODEL_FILE")
+    hf_labels_file: str = Field(default="class_names.json", alias="HF_LABELS_FILE")
+    hf_token: Optional[str] = Field(default=None, alias="HF_TOKEN")
+    force_download: bool = Field(default=False, alias="FORCE_DOWNLOAD")
+
+    
 
     
     @validator('log_level')

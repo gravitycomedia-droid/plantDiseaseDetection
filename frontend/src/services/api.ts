@@ -7,10 +7,12 @@ import {
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-// Debug logging
-// console.log("Environment variables:", import.meta.env);
-// console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
-// console.log("API_BASE_URL:", API_BASE_URL);
+// Debug logging for environment variables
+if (import.meta.env.DEV) {
+  console.log("VITE_API_URL detected:", import.meta.env.VITE_API_URL);
+}
+console.log("Active API Base URL:", API_BASE_URL);
+
 
 class ApiClient {
   private baseUrl: string;
@@ -57,15 +59,15 @@ class ApiClient {
     // Use configured base URL (from constructor / env) and normalize it
     const baseUrl = (this.baseUrl || API_BASE_URL).replace(/\/$/, "");
     const url = `${baseUrl}/api/predict`;
+    const fullUrl = url.startsWith('http') ? url : `${window.location.origin}${url}`;
 
-    // console.log("Making prediction request to:", url);
-    // console.log("Configured API_BASE_URL:", API_BASE_URL);
-    // console.log("this.baseUrl:", this.baseUrl);
+    console.log("🚀 Prediction requested:", fullUrl);
 
-    const response = await fetch(url, {
+    const response = await fetch(fullUrl, {
       method: "POST",
       body: formData,
     });
+
 
     if (!response.ok) {
       const errorData: ApiError = await response.json().catch(() => ({
